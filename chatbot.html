@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLA Barbados Licensing Chatbot</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh; display: flex; justify-content: center; align-items: center;
+        }
+        .chat-container {
+            width: 90%; max-width: 700px; height: 85vh;
+            background: white; border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .chat-header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;
+            padding: 24px; text-align: center;
+        }
+        .chat-header h2 { font-size: 24px; margin-bottom: 4px; }
+        .chat-header p { opacity: 0.9; font-size: 16px; }
+        .chat-messages {
+            flex: 1; padding: 24px; overflow-y: auto; background: #f8fafc;
+        }
+        .message { margin-bottom: 20px; animation: fadeIn 0.4s ease; }
+        .user-message { text-align: right; }
+        .bot-message { text-align: left; }
+        .message-content {
+            display: inline-block; max-width: 80%; padding: 16px 20px;
+            border-radius: 20px; line-height: 1.5;
+        }
+        .user-message .message-content { 
+            background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white; 
+        }
+        .bot-message .message-content { 
+            background: white; border: 1px solid #e2e8f0; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .chat-input {
+            padding: 24px; background: white; border-top: 1px solid #e2e8f0;
+            display: flex; gap: 16px;
+        }
+        input[type="text"] {
+            flex: 1; padding: 16px 24px; border: 2px solid #e2e8f0;
+            border-radius: 28px; font-size: 16px; outline: none;
+            transition: all 0.3s;
+        }
+        input[type="text"]:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        button {
+            padding: 16px 32px; background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white; border: none; border-radius: 28px; cursor: pointer; 
+            font-weight: 600; font-size: 16px; transition: all 0.3s;
+        }
+        button:hover:not(:disabled) { 
+            transform: translateY(-2px); box-shadow: 0 10px 25px rgba(79,70,229,0.4); 
+        }
+        button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .status { 
+            padding: 12px 24px; background: #eff6ff; color: #1e40af; 
+            font-size: 14px; text-align: center; border-top: 1px solid #dbeafe;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2> Barbados Licensing Authority</h2>
+            <p>Your AI assistant for permits, licences & services</p>
+        </div>
+        
+        <div class="chat-messages" id="messages">
+            <div class="message bot-message">
+                <div class="message-content">
+                    Hello! I'm your Barbados Licensing Authority assistant. 
+                    Ask me about vanity plates, parking permits, complaints, or any BLA service! 
+                </div>
+            </div>
+        </div>
+        
+        <div class="status" id="status">Ready to help!</div>
+        
+        <div class="chat-input">
+            <input type="text" id="queryInput" placeholder="e.g. How do I apply for a vanity plate?" autocomplete="off">
+            <button onclick="sendMessage()" id="sendBtn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000/chat';
+  // Your Python backend
+        let isTyping = false;
+
+        async function sendMessage() {
+            const input = document.getElementById('queryInput');
+            const query = input.value.trim();
+            if (!query || isTyping) return;
+
+            addMessage(query, 'user');
+            input.value = '';
+            showStatus('🔍 Searching BLA documents...');
+            isTyping = true;
+            document.getElementById('sendBtn').disabled = true;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query })
+                });
+
+                const data = await response.json();
+                addMessage(data.answer, 'bot');
+                showStatus('Ready for your next question!');
+            } catch (error) {
+                addMessage("Sorry, I'm having trouble connecting to the document search. Please check the backend is running!", 'bot');
+                showStatus('Connection error - check Python backend');
+                console.error('Error:', error);
+            } finally {
+                isTyping = false;
+                document.getElementById('sendBtn').disabled = false;
+                input.focus();
+            }
+        }
+
+
+        function addMessage(text, sender) {
+            const messages = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.innerHTML = `<div class="message-content">${text.replace(/\n/g, '<br>')}</div>`;
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function showStatus(text) {
+            document.getElementById('status').textContent = text;
+        }
+
+        // Enter key & focus
+        document.getElementById('queryInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+        window.onload = () => document.getElementById('queryInput').focus();
+    </script>
+</body>
+</html>
