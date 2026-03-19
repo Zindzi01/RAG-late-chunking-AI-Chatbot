@@ -1,6 +1,6 @@
-# Barbados Licensing Authority RAG Chatbot
+# AI Powered RAG Chatbot
 
-This project is an AI-powered chatbot that uses a Retrieval-Augmented Generation (RAG) pipeline with adaptive late chunking to answer questions based on Barbados Licensing Authority (BLA) documents.
+This project is an AI-powered chatbot that uses a Retrieval-Augmented Generation (RAG) pipeline with adaptive late chunking to answer questions based on Barbados Licensing Authority (BLA) documents found on https://bla.gov.bb/.
 
 The system ingests structured JSON data, converts it into vector embeddings, stores it in a Qdrant vector database, and serves responses through a Flask API using an LLM via OpenRouter.
 
@@ -35,7 +35,7 @@ The system ingests structured JSON data, converts it into vector embeddings, sto
 
 ## Data Source
 
-The data used for this project was sourced from publicly accessible information from the Barbados Licensing Authority (bla.gov.bb).
+The data used for this project was sourced from publicly accessible information from the Barbados Licensing Authority ((https://bla.gov.bb/)).
 
 ---
 
