@@ -7,11 +7,15 @@ The system ingests structured JSON data, converts it into vector embeddings, sto
 ---
 
 ## Project Structure
-.
+
 ├── app3.py          # Flask API + RAG query pipeline
+
 ├── ingest.py        # Data ingestion and vector indexing
+
 ├── data/            # Folder containing JSON documents
+
 ├── .env             # Environment variables (API keys)
+
 ├── requirements.txt # Dependencies
 
 ---
