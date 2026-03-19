@@ -75,7 +75,9 @@ OPENROUTER_API_KEY=your_openrouter_api_key
 
 Create a `data` folder and place your JSON files inside:
 data/
+
 ├── file1.json
+
 ├── file2.json
 
 ---
