@@ -190,8 +190,7 @@ openai
 ---
 
 ## Notes
-
-- Ensure your Qdrant collection name matches in both scripts (`rag_latechunk_test2`)  
+ 
 - The ingestion script deletes and recreates the collection each run  
 - JSON files should contain meaningful text content for best results  
 - The system is optimized for structured government/service documents  
