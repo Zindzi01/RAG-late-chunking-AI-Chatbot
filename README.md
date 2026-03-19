@@ -35,7 +35,7 @@ The system ingests structured JSON data, converts it into vector embeddings, sto
 
 ## Data Source
 
-The data used for this project was sourced from publicly accessible information from the Barbados Licensing Authority ((https://bla.gov.bb/)).
+The data used for this project was sourced from publicly accessible information from the Barbados Licensing Authority ((https://bla.gov.bb/)). Note that files should be converted from pdf to json via pdfplumber, docling, etc.
 
 ---
 
