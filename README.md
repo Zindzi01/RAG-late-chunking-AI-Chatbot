@@ -137,7 +137,6 @@ http://localhost:3000/chatbot.html
    - Keyword-based reranking (top 10 refined results)  
 4. Context is constructed from top chunks  
 5. LLM generates a response using OpenRouter (Qwen3-32B)  
-6. Response is returned as JSON  
 
 ---
 
