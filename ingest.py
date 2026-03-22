@@ -140,7 +140,7 @@ for file in os.listdir(DATA_FOLDER):
                 # Safe extraction
                 full_text = extract_text_safely(doc, file)
                 if len(full_text.strip()) < 50:
-                    print(f"  ❌ Skipping {file} - too little text")
+                    print(f"   Skipping {file} - too little text")
                     continue
                 
                 # Safe metadata
